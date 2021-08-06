@@ -1,0 +1,62 @@
+version: "3.3"
+
+services:
+
+  traefik:
+    image: "traefik:v2.4"
+    container_name: "traefik"
+    command:
+    # - "--log.level=DEBUG"
+    #  - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.websecure.address=:443"
+      - "--entrypoints.web.http.redirections.entryPoint.to=websecure"
+      - "--entrypoints.web.http.redirections.entryPoint.scheme=https"
+      - "--entrypoints.web.http.redirections.entrypoint.permanent=true"
+      - "--certificatesresolvers.myresolver.acme.dnschallenge=true"
+      - "--certificatesresolvers.myresolver.acme.dnschallenge.provider=ovh"
+      - "--certificatesresolvers.myresolver.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory"
+      - "--certificatesresolvers.myresolver.acme.email=your.mail@domain.com"
+      - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
+    ports:
+      - "80:80"
+      - "443:443"
+    #  - "8080:8080"
+    environment:
+      - "OVH_ENDPOINT=ovh-eu" # ou "ovh-ca"
+      - "OVH_APPLICATION_KEY=YOUR_APP_KEY"
+      - "OVH_APPLICATION_SECRET=YOUR_APP_SECRET"
+      - "OVH_CONSUMER_KEY=YOUR_CONSUMER_KEY"
+    volumes:
+      - "./letsencrypt:/letsencrypt"
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+
+  node-red:
+    image: nodered/node-red:latest
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.nodered.rule=Host(`sous-domaine.domain.com`)"
+      - "traefik.http.routers.nodered.entrypoints=websecure"
+      - "traefik.http.routers.nodered.tls.certresolver=myresolver"
+    environment:
+      - TZ=Europe/Paris
+    volumes:
+      - node-red-data:/data
+
+  node-red-2:
+    image: nodered/node-red:latest
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.nodered-2.rule=Host(`sous-domaine2.domain.com`)"
+      - "traefik.http.routers.nodered-2.entrypoints=websecure"
+      - "traefik.http.routers.nodered-2.tls.certresolver=myresolver"
+    environment:
+      - TZ=Europe/Paris
+    volumes:
+      - node-red-2-data:/data
+
+volumes:
+  node-red-data:
+  node-red-2-data:
