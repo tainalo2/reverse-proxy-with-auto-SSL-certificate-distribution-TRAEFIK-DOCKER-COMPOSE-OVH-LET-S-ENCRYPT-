@@ -68,6 +68,6 @@ L'objectif est le suivant :
   - Tester
     - Rendez vous sur la page web "sous-domaine1.domain.com" elle est normalement chiffrée et signée par Let's Encrypt
 
-#Credit
+# Credit
 Create by tainalo2 : french streamer on twitch every week day from 07H to 09H (Paris hours)
 All my links here : https://linktr.ee/tainalo2
