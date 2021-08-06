@@ -1,0 +1,20 @@
+curl -XPOST -H "X-Ovh-Application: YOUR_APP_KEY" -H "Content-type: application/json" https://eu.api.ovh.com/1.0/auth/credential -d '{
+	"accessRules":[
+		{
+			"method":"POST",
+			"path":"/"
+		},
+		{
+			"method":"POST",
+			"path":"/"
+		},
+		{
+			"method":"DELETE",
+			"path":"/domain/zone/*/record/*"
+		}
+	],
+	"redirection":"https://*"
+}'
+
+// En une seule ligne ->
+curl -XPOST -H "X-Ovh-Application: YOUR_APP_KEY" -H "Content-type: application/json" https://eu.api.ovh.com/1.0/auth/credential -d '{"accessRules":[{"method":"POST","path":"/domain/zone/*/record"},{"method":"POST","path":"/domain/zone/*/refresh"},{"method":"DELETE","path":"/domain/zone/*/record/*"}], "redirection": "https://*"}'
