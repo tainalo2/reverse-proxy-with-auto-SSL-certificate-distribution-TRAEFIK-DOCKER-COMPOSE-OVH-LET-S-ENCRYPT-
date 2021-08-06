@@ -49,4 +49,25 @@ L'objectif est le suivant :
     - Sélectionnez votre nom de domaine > aller dans "Zone DNS" > "Ajouter une entrée" > "A" > saisir le sous domaine "\*" > cible = IP de votre serveur > "Suivant"
   
   - créer un accès à l'API OVH
-    - récupérer les 
+    - Aller sur le site : https://eu.api.ovh.com/createApp/ (if canada go on : https://ca.api.ovh.com/createApp/)
+    - Renseigner les divers champs > Enregistrer précieusement l'APP KEY et la APP SECRET
+    - récupérer le fichier "curl-api-OVH.text" > rempacer le "YOUR_APP_KEY" par l'app key que vous venez d'obtenir
+    - faire la requête CURL en cli > Se rendre sur le lien de validation et se connecter > sauvegarder la CONSUMER KEY en réponse de la requête !
+  
+  - Rédiger le YML de docker-compose
+    - Télécharger sur votre serveur le fichier "docker-compose.yml" hébergé dans ce GIT
+    - Editer le fichier en modifiant :
+    - "your.mail@domain.com" par votre mail à vous
+    - YOUR_APP_KEY par votre app key OVH
+    - YOUR_APP_SECRET par votre app secret OVH
+    - YOUR_CONSUMER_KEY par votre consumer key OVH
+    - "sous-domaine1.domain.com" et "sous-domaine2.domain.com" par votre domaine OVH et le sous-domaine que vous souhaitez, pas besoin de le déclarer chez OVH
+
+    - en CLI placez vous dans le dossier du fichier "docker-compose.yml" et exécutez la commande : "docker-compose up -d"
+ 
+  - Tester
+    - Rendez vous sur la page web "sous-domaine1.domain.com" elle est normalement chiffrée et signée par Let's Encrypt
+
+#Credit
+Create by tainalo2 : french streamer on twitch every week day from 07H to 09H (Paris hours)
+All my links here : https://linktr.ee/tainalo2
